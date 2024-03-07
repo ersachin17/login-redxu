@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const error = useSelector(state => state.auth.error);
+  const error = useSelector(state => state.auth.user?.error);
+  const loading = useSelector(state => state.auth.user?.loading);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-       dispatch(loginUser({
+      await dispatch(loginUser({
         email: email,
         password: password,
         loginType: "member",
@@ -33,14 +34,16 @@ const Login = () => {
   };
 
   return (
-    <div>
-  
-<div className=' w-72 m-auto h-60  rounded-md text-center py-5 mt-52'> 
-<form className=' flex flex-col border  text-center bg-slate-200' onSubmit={handleSubmit}>
+    <div className='h-screen bg-slate-200'>
+<div className=' w-72 m-auto h-60   text-center py-5 pt-52'> 
+<form className=' flex flex-col border rounded-md text-center bg-slate-400' onSubmit={handleSubmit}>
 <input type='text' className='my-5 w-56 m-auto rounded-md pl-2 py-1' required value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Enter Name'/>
    <input type='password' className='my-5 w-56  m-auto rounded-md pl-2 py-1' required placeholder='password' value={password} onChange={(e)=>setPassword(e.target.value)} />
-   <button className='mt-4 px-3 bg-slate-500 w-20 m-auto rounded-md mb-4' type='submit'>
-    Login</button>
+   {loading?(
+     <button className='mt-4 px-3 bg-purple-500 w-20 m-auto rounded-md mb-4' type='submit'>Loading...</button>
+   ):(
+    <button className='mt-4 px-3 bg-purple-500 w-20 m-auto rounded-md mb-4' type='submit'>Login</button>
+   )}
     {error && (
         <div>{error}</div>
     )}

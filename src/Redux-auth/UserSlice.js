@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import { json } from "react-router-dom";
 
 export const loginUser = createAsyncThunk("login/user", async (credentials) => {
   const response = await fetch('https://api.juaaree.com/api/v1/login', {
@@ -15,7 +16,7 @@ export const loginUser = createAsyncThunk("login/user", async (credentials) => {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
     error: null,
     loading: false
   },
@@ -25,6 +26,9 @@ const authSlice = createSlice({
     },
     setError: (state, action) => {
       state.error = action.payload;
+    },
+    logout:(state)=>{
+       state.user = null
     }
   },
   extraReducers: (builder) => {
@@ -36,6 +40,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.user = action.payload;
+        localStorage.setItem("user",JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -44,5 +49,5 @@ const authSlice = createSlice({
   }
 });
 
-export const { setUser, setError } = authSlice.actions;
+export const { setUser, setError,logout } = authSlice.actions;
 export default authSlice.reducer;
