@@ -16,7 +16,7 @@ export const loginUser = createAsyncThunk("login/user", async (credentials) => {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user:localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')) : null,
+    user:localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
     error: null,
     loading: false
   },
@@ -29,7 +29,7 @@ const authSlice = createSlice({
     },
     logout:(state)=>{
        state.user = null;
-       localStorage.removeItem('userData');
+       localStorage.removeItem('user');
     }
   },
   extraReducers: (builder) => {
@@ -41,7 +41,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.user = action.payload;
-        localStorage.setItem('userData', JSON.stringify(action.payload));
+        localStorage.setItem('user', JSON.stringify(action.payload));
       
       })
       .addCase(loginUser.rejected, (state, action) => {

@@ -12,7 +12,7 @@ const Navbar = () => {
      {playerId &&(
       <p>Player Id : {playerId}</p>
       )}
-      <button className='bg-red-500 px-4 rounded-md' onClick={()=>dispatch(logout(tokenId),navigate("/") )} >Logout</button>
+      <button className='bg-red-500 px-4  items-center rounded-md' onClick={()=>dispatch(logout(tokenId),navigate("/") )} >Logout</button>
     </div>
   )
 }
